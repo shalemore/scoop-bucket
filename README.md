@@ -12,7 +12,9 @@ scoop install <app>
 ## Apps
 
 <!-- apps:start -->
-_No apps yet._
+| App | Description |
+| --- | --- |
+| [outbound](https://github.com/shalemore/outbound) | Tray app that mirrors new files from local folders to a VPS over ssh |
 <!-- apps:end -->
 
 The table is written by the import described below. Do not edit it by hand.

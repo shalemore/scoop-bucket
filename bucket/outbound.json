@@ -1,0 +1,35 @@
+{
+    "version": "0.1.0",
+    "description": "Tray app that mirrors new files from local folders to a VPS over ssh",
+    "homepage": "https://github.com/shalemore/outbound",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/shalemore/outbound/releases/download/v0.1.0/outbound-x86_64-pc-windows-msvc.exe#/outbound.exe",
+            "hash": "daa6fd7278652c4636ed98426c6d2a1d07432701b2bf2dbaabbefea60d3ccca1"
+        }
+    },
+    "bin": "outbound.exe",
+    "shortcuts": [
+        [
+            "outbound.exe",
+            "Outbound"
+        ]
+    ],
+    "pre_uninstall": [
+        "Get-Process outbound -ErrorAction SilentlyContinue | Stop-Process",
+        "Start-Process -FilePath \"$dir\\outbound.exe\" -ArgumentList '--cleanup' -Wait"
+    ],
+    "notes": "Run 'outbound' to start it in the tray. The first run writes a configuration template; open it from the tray menu, set the ssh host and the folders, and save.",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/shalemore/outbound/releases/download/v$version/outbound-x86_64-pc-windows-msvc.exe#/outbound.exe",
+                "hash": {
+                    "url": "$baseurl.sha256"
+                }
+            }
+        }
+    }
+}
