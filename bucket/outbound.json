@@ -1,12 +1,12 @@
 {
-    "version": "0.2.0",
-    "description": "Tray app that mirrors new files from local folders to a VPS over ssh",
+    "version": "0.3.0",
+    "description": "Tray app that moves files from local folders to a Linux server over ssh",
     "homepage": "https://github.com/shalemore/outbound",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/shalemore/outbound/releases/download/v0.2.0/outbound-x86_64-pc-windows-msvc.exe#/outbound.exe",
-            "hash": "afe47d436e8d4578c69daa7b1df73980916c1b3f6408491dcb1c2e5396dbb6b8"
+            "url": "https://github.com/shalemore/outbound/releases/download/v0.3.0/outbound-x86_64-pc-windows-msvc.exe#/outbound.exe",
+            "hash": "232cd7794bdeab48b14243496dfecac6d559e1f8ed6aa5728657941ce0c33e47"
         }
     },
     "bin": "outbound.exe",
@@ -18,7 +18,7 @@
     ],
     "pre_uninstall": [
         "Get-Process outbound -ErrorAction SilentlyContinue | Stop-Process",
-        "Start-Process -FilePath \"$dir\\outbound.exe\" -ArgumentList '--cleanup' -Wait"
+        "if ($cmd -eq 'uninstall') { Start-Process -FilePath \"$dir\\outbound.exe\" -ArgumentList '--cleanup' -Wait }"
     ],
     "notes": "Run 'outbound' to start it in the tray. The first run writes a configuration template; open it from the tray menu, set the ssh host and the folders, and save.",
     "checkver": "github",
