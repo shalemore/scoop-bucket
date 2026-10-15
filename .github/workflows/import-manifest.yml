@@ -1,0 +1,93 @@
+name: Import manifest
+
+# Imports the Scoop manifest that an app publishes with a GitHub release: creates the manifest if
+# the app is new, updates it if the app is already here, and opens a pull request for it. The
+# release workflow of the app starts this one, see the README.
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: The repository of the app, written as owner/name
+        required: true
+      tag:
+        description: The tag of the release, such as v0.1.0
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: import-manifest-${{ inputs.repo }}
+  cancel-in-progress: false
+
+jobs:
+  import:
+    name: Import
+    runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      # The inputs go through the environment and never into a script, so that nothing typed into
+      # them can run as code.
+      REPO: ${{ inputs.repo }}
+      TAG: ${{ inputs.tag }}
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: my_bucket
+    steps:
+      - name: Checkout Bucket
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: my_bucket
+      - name: Checkout Scoop
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ScoopInstaller/Scoop
+          path: scoop_core
+      - name: Install and cache test dependencies
+        uses: potatoqualitee/psmodulecache@9e4b63833c22c1768d648e115a9c849afdda22a5 # v6.3
+        with:
+          modules-to-cache: BuildHelpers, Pester
+          shell: pwsh
+      - name: Import the manifest
+        id: import
+        run: |
+          $env:SCOOP_HOME = Convert-Path ../scoop_core
+          ./bin/import-manifest.ps1 -Repo $env:REPO -Tag $env:TAG
+      # A pull request that the workflow token opens does not start the CI workflow, so the checks
+      # run here, before the pull request exists.
+      - name: Check the bucket
+        if: steps.import.outputs.changed == 'true'
+        run: |
+          $env:SCOOP_HOME = Convert-Path ../scoop_core
+          ./bin/test.ps1
+      - name: Open the pull request
+        if: steps.import.outputs.changed == 'true'
+        env:
+          NAME: ${{ steps.import.outputs.name }}
+          VERSION: ${{ steps.import.outputs.version }}
+          ACTION: ${{ steps.import.outputs.action }}
+        run: |
+          $branch = "import/$env:NAME-$env:VERSION"
+          if ($env:ACTION -eq 'created') {
+              $title = "feat: add $env:NAME $env:VERSION"
+          } else {
+              $title = "chore: update $env:NAME to $env:VERSION"
+          }
+          $body = "Imported from the release [$env:TAG](https://github.com/$env:REPO/releases/tag/$env:TAG) of $env:REPO.`n`nThe manifest comes from the release, and the table of apps in the README was written again. The checks of Scoop passed in the run that opened this pull request."
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -C $branch
+          git add -A
+          git commit -m $title
+          git push --force origin $branch
+
+          $base = gh repo view --json defaultBranchRef --jq .defaultBranchRef.name
+          $open = gh pr list --head $branch --state open --json number --jq '.[0].number'
+          if ($open) {
+              gh pr edit $open --title $title --body $body
+          } else {
+              gh pr create --base $base --head $branch --title $title --body $body
+          }
