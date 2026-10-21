@@ -1,12 +1,16 @@
 {
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "Tray app that moves files from local folders to a Linux server over ssh",
     "homepage": "https://github.com/shalemore/outbound",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/shalemore/outbound/releases/download/v0.4.0/outbound-x86_64-pc-windows-msvc.exe#/outbound.exe",
-            "hash": "8ba797370613c9b77bf4d43b321d5d9d30c1507e12c74deb605d835a74ca9219"
+            "url": "https://github.com/shalemore/outbound/releases/download/v0.4.1/outbound-x86_64-pc-windows-msvc.exe#/outbound.exe",
+            "hash": "bc04afbbb93484d7c302233cfb3e9ad19419580c890cbd231966e0a315f9d783"
+        },
+        "arm64": {
+            "url": "https://github.com/shalemore/outbound/releases/download/v0.4.1/outbound-aarch64-pc-windows-msvc.exe#/outbound.exe",
+            "hash": "436c58a0646322787ecda17600fd311348631dbce61bd85f925a81ecc15e72df"
         }
     },
     "bin": "outbound.exe",
@@ -26,6 +30,12 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/shalemore/outbound/releases/download/v$version/outbound-x86_64-pc-windows-msvc.exe#/outbound.exe",
+                "hash": {
+                    "url": "$baseurl.sha256"
+                }
+            },
+            "arm64": {
+                "url": "https://github.com/shalemore/outbound/releases/download/v$version/outbound-aarch64-pc-windows-msvc.exe#/outbound.exe",
                 "hash": {
                     "url": "$baseurl.sha256"
                 }
