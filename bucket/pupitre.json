@@ -6,9 +6,11 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/shalemore/pupitre/releases/download/v0.7.0/Pupitre-0.7.0-win-x64.exe#/dl.7z",
-            "hash": "9e682c157e24c5467338163af8829dfaf316f8a970759aa3524ceeff33546d00"
+            "hash": "9e682c157e24c5467338163af8829dfaf316f8a970759aa3524ceeff33546d00",
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse",
     "bin": "Pupitre.exe",
     "shortcuts": [
         [
