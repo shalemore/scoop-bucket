@@ -1,0 +1,30 @@
+{
+    "version": "0.7.0",
+    "description": "A markdown editor",
+    "homepage": "https://github.com/shalemore/pupitre",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/shalemore/pupitre/releases/download/v0.7.0/Pupitre-0.7.0-win-x64.exe#/dl.7z",
+            "hash": "9e682c157e24c5467338163af8829dfaf316f8a970759aa3524ceeff33546d00"
+        }
+    },
+    "bin": "Pupitre.exe",
+    "shortcuts": [
+        [
+            "Pupitre.exe",
+            "Pupitre"
+        ]
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/shalemore/pupitre/releases/download/v$version/Pupitre-$version-win-x64.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl.sha256"
+                }
+            }
+        }
+    }
+}
