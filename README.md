@@ -15,6 +15,7 @@ scoop install <app>
 | App | Description |
 | --- | --- |
 | [outbound](https://github.com/shalemore/outbound) | Tray app that moves files from local folders to a Linux server over ssh |
+| [pupitre](https://github.com/shalemore/pupitre) | A markdown editor |
 <!-- apps:end -->
 
 The table is written by the import described below. Do not edit it by hand.
