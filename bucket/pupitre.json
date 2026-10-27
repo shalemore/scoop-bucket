@@ -1,12 +1,12 @@
 {
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "A markdown editor",
     "homepage": "https://github.com/shalemore/pupitre",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/shalemore/pupitre/releases/download/v0.8.0/Pupitre-0.8.0-win-x64.exe#/dl.7z",
-            "hash": "90af11b964b30f6da080dd52aca8624e121274ce43504c1d25a57a62ae974dde",
+            "url": "https://github.com/shalemore/pupitre/releases/download/v0.8.1/Pupitre-0.8.1-win-x64.exe#/dl.7z",
+            "hash": "342584b387b037f157e38c69e5cf1aa5eb8b3b96ec997e097fef98b30add03de",
             "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
         }
     },
